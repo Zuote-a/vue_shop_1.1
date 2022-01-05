@@ -112,7 +112,7 @@ export default {
   height: 600px;
   position: absolute;
   top: 110px;
-  background-image: url("../assets/matter03.jpg");
+  background-image: url("../assets/matter/matter03.jpg");
 }
 .login_box{
   width: 450px;
