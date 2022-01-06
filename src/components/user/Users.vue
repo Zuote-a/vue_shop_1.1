@@ -188,29 +188,29 @@ export default {
   },
   methods: {
     // 根据id删除对应的用户
-    removeUserById (id) {
+    async removeUserById (id) {
       // console.log(id)
       // 是否确认删除的提示框
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async () => {
-        const { data: res } = await this.$http.delete(`users/${id}`)
-        if (res.meta.status !== 200) {
-          this.$message.error('删除用户失败')
-        }
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-        this.getUserList()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+      }).catch(err => err)
+      // console.log(confirmResult)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消删除')
+      }
+      // 确认删除返回confirm字符串
+      // 取消都会报错,用.catch()捕获错误,返回cancel字符串
+      const { data: res } = await this.$http.delete(`users/${id}`)
+      if (res.meta.status !== 200) {
+        this.$message.error('删除用户失败')
+      }
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
       })
+      this.getUserList()
     },
     // 修改用户的请求提交预验证
     editUser () {
